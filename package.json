@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node build/index.js",
+    "start-dev": "tsx src/index.ts",
     "build": "rimraf build && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,7 @@
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.18.10",
     "rimraf": "^6.0.1",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },
   "dependencies": {
