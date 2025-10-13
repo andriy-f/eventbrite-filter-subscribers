@@ -13,5 +13,8 @@
   "packageManager": "pnpm@10.18.1",
   "devDependencies": {
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "csv": "^6.4.1"
   }
 }
