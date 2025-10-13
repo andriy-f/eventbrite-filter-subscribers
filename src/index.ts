@@ -1,6 +1,14 @@
 import { generate, parse } from 'csv'
 import fs from "node:fs";
 
+type ImportRecord = {
+    email: string
+    firstName: string
+    lastName: string
+    isSubscribed: string // "Yes" | "No"
+    unsubscribedDate: string
+}
+
 const __dirname = new URL(".", import.meta.url).pathname;
 
 const getFileReader = async (fileName: string) => {
@@ -17,11 +25,19 @@ const main = async () => {
     for (const file of csvFiles) {
         console.log('Processing file:', file)
         const fileStream = await getFileReader(file)
-        const parser = fileStream.pipe(parse())
+        const parser = fileStream.pipe(parse({
+            // columns: true,
+            columns: ['email',
+                'firstName',
+                'lastName',
+                'isSubscribed',
+                'unsubscribedDate'
+            ],
+        }))
 
-        // for await (const record of parser) {
-        //     console.log(record)
-        // }
+        for await (const record of parser) {
+            console.log(record)
+        }
     }
 }
 
