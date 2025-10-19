@@ -61,7 +61,9 @@ const createFilterSubscribedTransform = () => transform((record) => {
 	}
 })
 
-const createCsvStringifyTransform = () => stringify()
+const createCsvStringifyTransform = () => stringify({
+	header: true
+})
 
 const processFile = (inputFilePath: string, outputFilePath: string) => {
 	const inputStream = fs.createReadStream(inputFilePath)
