@@ -1,4 +1,4 @@
-import { generate, parse } from 'csv'
+import { parse } from 'csv'
 import fs from "node:fs";
 
 type ImportRecord = {
@@ -9,15 +9,15 @@ type ImportRecord = {
     unsubscribedDate: string
 }
 
-const __dirname = new URL(".", import.meta.url).pathname;
+const __dirname = new URL(".", import.meta.url).pathname; // like '.../src/' with trailing slash
 
 const getFileReader = async (fileName: string) => {
-    const readStream = fs.createReadStream(`${__dirname}/../import/${fileName}`)
+    const readStream = fs.createReadStream(`${__dirname}../import/${fileName}`)
     return readStream
 }
 
 const main = async () => {
-    const allFiles = fs.readdirSync(`${__dirname}/../import`)
+    const allFiles = fs.readdirSync(`${__dirname}../import`)
     const csvFiles = allFiles.filter((file) => file.endsWith('.csv'))
     console.log('Number of files to process:', csvFiles.length)
 
@@ -36,7 +36,7 @@ const main = async () => {
         }))
 
         for await (const record of parser) {
-            console.log(record)
+            // console.log(record)
         }
     }
 }
