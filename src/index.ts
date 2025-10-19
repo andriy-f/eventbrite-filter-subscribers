@@ -19,6 +19,7 @@ type Location = {
 	countryCode: string
 	stateCode: string
 	city: string
+	countriesOfInterest: string
 }
 
 const contactSchema = z.object({
@@ -37,17 +38,17 @@ const fileNameToLocation = (fileName: string): Location => {
 	const fileNameLowercase = fileName.toLowerCase()
 
 	if (fileNameLowercase.includes('berlin')) {
-		return { countryCode: 'DE', stateCode: '', city: 'Berlin' }
+		return { countryCode: 'DE', stateCode: '', city: 'Berlin', countriesOfInterest: 'Germany' }
 	} else if (fileNameLowercase.includes('dresden')) {
-		return { countryCode: 'DE', stateCode: 'Saxony', city: 'Dresden' }
+		return { countryCode: 'DE', stateCode: 'Saxony', city: 'Dresden', countriesOfInterest: 'Germany' }
 	} else if (fileNameLowercase.includes('munich') || fileNameLowercase.includes('munchen')) {
-		return { countryCode: 'DE', stateCode: '', city: 'Munich' }
+		return { countryCode: 'DE', stateCode: '', city: 'Munich', countriesOfInterest: 'Germany' }
 	} else if (fileNameLowercase.includes('nurenberg') || fileNameLowercase.includes('nuernberg') || fileNameLowercase.includes('nuremberg')) {
-		return { countryCode: 'DE', stateCode: '', city: 'Nurenberg' }
+		return { countryCode: 'DE', stateCode: '', city: 'Nurenberg', countriesOfInterest: 'Germany' }
 	} else if (fileNameLowercase.includes('london')) {
-		return { countryCode: 'GB', stateCode: '', city: 'London' }
+		return { countryCode: 'GB', stateCode: '', city: 'London', countriesOfInterest: 'United Kingdom' }
 	} else {
-		return { countryCode: '', stateCode: '', city: '' }
+		return { countryCode: '', stateCode: '', city: '', countriesOfInterest: '' }
 	}
 }
 
