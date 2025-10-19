@@ -3,6 +3,7 @@ import fs from "node:fs";
 import z from 'zod';
 import { logger } from './logging.js';
 import dotenv from 'dotenv';
+import { log } from 'node:console';
 
 dotenv.config();
 
@@ -12,6 +13,12 @@ type ImportRecord = {
 	lastName: string
 	isSubscribed: string // "Yes" | "No"
 	unsubscribedDate: string
+}
+
+type Location = {
+	countryCode: string
+	stateCode: string
+	city: string
 }
 
 const contactSchema = z.object({
@@ -26,6 +33,24 @@ const __dirname = new URL(".", import.meta.url).pathname; // like '.../src/' wit
 const importDir = `${__dirname}../import/`
 const exportDir = `${__dirname}../export/`
 
+const fileNameToLocation = (fileName: string): Location => {
+	const fileNameLowercase = fileName.toLowerCase()
+
+	if (fileNameLowercase.includes('berlin')) {
+		return { countryCode: 'DE', stateCode: '', city: 'Berlin' }
+	} else if (fileNameLowercase.includes('dresden')) {
+		return { countryCode: 'DE', stateCode: 'Saxony', city: 'Dresden' }
+	} else if (fileNameLowercase.includes('munich') || fileNameLowercase.includes('munchen')) {
+		return { countryCode: 'DE', stateCode: '', city: 'Munich' }
+	} else if (fileNameLowercase.includes('nurenberg') || fileNameLowercase.includes('nuernberg') || fileNameLowercase.includes('nuremberg')) {
+		return { countryCode: 'DE', stateCode: '', city: 'Nurenberg' }
+	} else if (fileNameLowercase.includes('london')) {
+		return { countryCode: 'GB', stateCode: '', city: 'London' }
+	} else {
+		return { countryCode: '', stateCode: '', city: '' }
+	}
+}
+
 const createCsvParseTransform = () => parse<ImportRecord>({
 	columns: ['email',
 		'firstName',
@@ -35,7 +60,7 @@ const createCsvParseTransform = () => parse<ImportRecord>({
 	],
 })
 
-const createFilterSubscribedTransform = () => transform((record) => {
+const createFilterSubscribedTransform = (location?: Location) => transform((record) => {
 	if (record.email === 'Email Address') {
 		// Skip header row
 		return null
@@ -49,12 +74,10 @@ const createFilterSubscribedTransform = () => transform((record) => {
 
 	const validRecord = parseRes.data
 	if (validRecord.isSubscribed === 'Yes') {
-		return validRecord
-		// return [validRecord.email,
-		// validRecord.firstName,
-		// validRecord.lastName,
-		// validRecord.isSubscribed,
-		// validRecord.unsubscribedDate || '']
+		return {
+			...validRecord,
+			...location
+		}
 	} else {
 		logger.debug(validRecord, `Unsubscribed contact, skipping`)
 		return null
@@ -65,12 +88,12 @@ const createCsvStringifyTransform = () => stringify({
 	header: true
 })
 
-const processFile = (inputFilePath: string, outputFilePath: string) => {
+const processFile = (inputFilePath: string, outputFilePath: string, location?: Location) => {
 	const inputStream = fs.createReadStream(inputFilePath)
 	const outputStream = fs.createWriteStream(outputFilePath)
 	const pipeline = inputStream
 		.pipe(createCsvParseTransform())
-		.pipe(createFilterSubscribedTransform())
+		.pipe(createFilterSubscribedTransform(location))
 		.pipe(createCsvStringifyTransform())
 		.pipe(outputStream)
 
@@ -100,7 +123,8 @@ const main = async () => {
 		logger.info(`Processing file: ${file}`)
 		const inputFilePath = `${importDir}${file}`
 		const outputFilePath = `${exportDir}${file}`
-		await processFile(inputFilePath, outputFilePath)
+		const location = fileNameToLocation(file)
+		await processFile(inputFilePath, outputFilePath, location)
 		await new Promise((res) => setTimeout(res, 1000)) // 1 second delay between files
 	}
 }
