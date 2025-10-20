@@ -11,9 +11,6 @@ importers:
       csv:
         specifier: ^6.4.1
         version: 6.4.1
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
       pino:
         specifier: ^10.1.0
         version: 10.1.0
@@ -274,10 +271,6 @@ packages:
 
   dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
-
-  dotenv@17.2.3:
-    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
-    engines: {node: '>=12'}
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -634,8 +627,6 @@ snapshots:
       stream-transform: 3.4.0
 
   dateformat@4.6.3: {}
-
-  dotenv@17.2.3: {}
 
   eastasianwidth@0.2.0: {}
 

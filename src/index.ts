@@ -2,10 +2,6 @@ import { parse, transform, stringify } from 'csv'
 import fs from "node:fs";
 import z from 'zod';
 import { logger } from './logging.js';
-import dotenv from 'dotenv';
-import { log } from 'node:console';
-
-dotenv.config();
 
 type ImportRecord = {
 	email: string
