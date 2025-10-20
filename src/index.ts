@@ -82,7 +82,18 @@ const createFilterSubscribedTransform = (location?: Location) => transform((reco
 })
 
 const createCsvStringifyTransform = () => stringify({
-	header: true
+	header: true,
+	columns: {
+		email: "Email",
+		firstName: "First Name",
+		lastName: "Last Name",
+		isSubscribed: "Is Subscribed",
+		unsubscribedDate: "Unsubscribed Date",
+		countryCode: "Country",
+		stateCode: "State",
+		city: "City",
+		countriesOfInterest: "Locations of interest",
+	}
 })
 
 const processFile = (inputFilePath: string, outputFilePath: string, location?: Location) => {
